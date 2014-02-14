@@ -1,0 +1,37 @@
+{
+  "name": "connect-modify",
+  "description": "connect middleware for adding js/css to all documents",
+  "version": "0.0.1",
+  "author": {
+    "name": "Jason Divock",
+    "email": "jdivock@gmail.com"
+  },
+  "contributors": [
+    {
+       "name": "Jason Divock",
+    "email": "jdivock@gmail.com"
+    }
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "express": "~3.2.2",
+    "supertest": "~0.6.0",
+    "mocha": "~1.9.0"
+  },
+  "keywords": [
+    "connect"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jdivock/connect-modify"
+  },
+  "main": "index",
+  "engines": {
+    "node": "*"
+  },
+  "readmeFilename": "README.md",
+  "bugs": {
+    "url": "https://github.com/jdivock/connect-modify/issues"
+  },
+  "homepage": "https://github.com/jdivock/connect-modify"
+}
