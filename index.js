@@ -25,6 +25,7 @@ module.exports = function livemodify(opt) {
     var js = opt.js || [];
     var css = opt.css || [];
     var mobileCss = opt.mobileCss || [];
+    var mobile = false;
 
     snippet += '<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />';
 
@@ -33,12 +34,11 @@ module.exports = function livemodify(opt) {
     });
 
     css.forEach(function(item) {
-        
-        cssSnippet += "\n<link rel=\"stylesheet\" href=\"" + item + "\">";
+        cssSnippet = "\n<link rel=\"stylesheet\" href=\"" + item + "\">";
     });
-     mobileCss.forEach(function(item) {
-        
-        mobileCssSnippet += "\n<link rel=\"stylesheet\" href=\"" + item + "\">";
+    mobileCss.forEach(function(item) {
+
+        mobileCssSnippet = "\n<link rel=\"stylesheet\" href=\"" + item + "\">";
     });
 
     // helper functions
@@ -66,8 +66,8 @@ module.exports = function livemodify(opt) {
         return /<[:_-\w\s\!\/\=\"\']+>/i.test(str);
     }
 
-    function _isMobile(str){
-    	if (!str) return false;
+    function _isMobile(str) {
+        if (!str) return false;
         return /EchoPark.Website.EchoPark.Mobile/i.test(str);
     }
 
@@ -93,16 +93,22 @@ module.exports = function livemodify(opt) {
             if (rule.match.test(body)) {
                 _body = body.replace(rule.match, function(w) {
 
-                		if(_isMobile(body)){
-                			console.log('MOBILE');
-                			snippet += mobileCssSnippet;
-                		} else {
-                			console.log('NOT MOBILE');
-                			snippet += cssSnippet
-                		}
+                    if (_isMobile(body)) {
+                        if (!/main.css/i.test(snippet)) {
+                            snippet += mobileCssSnippet;
+                            snippet += '<body ng-app="echoParkApp">'
+                        }
+
+                    } else {
+                        if (!/main.css/i.test(snippet)) {
+                            snippet += cssSnippet;
+                            snippet += '<body ng-app="echoParkApp">'
+                        }
+                    }
 
                     return rule.fn(w, snippet);
                 });
+                _body += '</body>';
                 return true;
             }
             return false;
@@ -169,7 +175,7 @@ module.exports = function livemodify(opt) {
                     res.push(snap(body));
                     return true;
                 } else if (html(body) || html(res.data)) {
-                	//console.log(res.data);
+                    //console.log(res.data);
                     // res.push(body);
                     return true;
                 } else {
